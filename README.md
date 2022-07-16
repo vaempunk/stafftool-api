@@ -2,4 +2,4 @@
 
 **Current state**: ready-to-use API
 
-API is available at http://localhost:8080/swagger-ui/index.html#
+API for installed server is available at http://localhost:8080/swagger-ui/index.html#
