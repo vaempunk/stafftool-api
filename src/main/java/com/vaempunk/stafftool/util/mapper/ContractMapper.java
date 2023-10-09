@@ -12,7 +12,7 @@ public class ContractMapper {
         var dto = new ContractDto();
         dto.setId(e.getId());
         dto.setEmployeeId(e.getEmployee().getId());
-        dto.setTeamId(e.getTeam().getId());
+        dto.setDepartmentId(e.getDepartment().getId());
         dto.setJobName(e.getJobName());
         dto.setStartDate(e.getStartDate());
         dto.setEndDate(e.getEndDate());

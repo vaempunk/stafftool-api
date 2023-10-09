@@ -9,11 +9,12 @@ import com.vaempunk.stafftool.entity.Department;
 
 public interface DepartmentRepository extends CrudRepository<Department, Long> {
 
-    public List<Department> findAll();
+    List<Department> findAll();
 
-    public Optional<Department> findByName(String name);
+    Optional<Department> findByName(String name);
 
-    public boolean existsByName(String name);
+    boolean existsByName(String name);
 
-    public boolean existsByNameAndIdNot(String name, long id);
+    boolean existsByNameAndIdNot(String name, long id);
+
 }

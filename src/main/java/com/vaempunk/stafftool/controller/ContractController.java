@@ -38,15 +38,15 @@ public class ContractController {
         return contractService.getAllByEmployeeId(employeeId);
     }
 
-    @GetMapping("/teams/{teamId}/contracts")
-    public List<ContractDto> getAllByTeamId(@PathVariable("teamId") Long teamId) {
-        return contractService.getAllByTeamId(teamId);
+    @GetMapping("/departments/{departmentId}/contracts")
+    public List<ContractDto> getAllByDepartmentId(@PathVariable("departmentId") Long departmentId) {
+        return contractService.getAllByDepartmentId(departmentId);
     }
 
-    @PostMapping("/teams/{teamId}/contracts")
+    @PostMapping("/departments/{departmentId}/contracts")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ContractDto add(@PathVariable("teamId") Long teamId, @RequestBody ContractDto newContractDto) {
-        newContractDto.setTeamId(teamId);
+    public ContractDto add(@PathVariable("departmentId") Long departmentId, @RequestBody ContractDto newContractDto) {
+        newContractDto.setDepartmentId(departmentId);
         return contractService.add(newContractDto);
     }
 

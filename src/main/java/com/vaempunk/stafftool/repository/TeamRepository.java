@@ -8,13 +8,14 @@ import com.vaempunk.stafftool.entity.Team;
 
 public interface TeamRepository extends CrudRepository<Team, Long> {
 
-    public List<Team> findAll();
+    List<Team> findAll();
 
-    public List<Team> findAllByDepartmentId(long departmentId);
+    List<Team> findAllByDepartmentId(long departmentId);
 
-    public Team findByName(String name);
+    Team findByName(String name);
 
-    public boolean existsByName(String name);
+    boolean existsByName(String name);
 
-    public boolean existsByNameAndIdNot(String name, long id);
+    boolean existsByNameAndIdNot(String name, long id);
+
 }

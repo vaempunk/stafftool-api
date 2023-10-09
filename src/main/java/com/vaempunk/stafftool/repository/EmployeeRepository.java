@@ -8,9 +8,16 @@ import com.vaempunk.stafftool.entity.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    public List<Employee> findAll();
-    public boolean existsByEmail(String email);
-    public boolean existsByPhoneNumber(String phoneNumber);
-    public boolean existsByEmailAndIdNot(String email, long id);
-    public boolean existsByPhoneNumberAndIdNot(String phoneNumber, long id);
+    List<Employee> findAll();
+
+    List<Employee> findAllByTeamId(long teamId);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
+    boolean existsByEmailAndIdNot(String email, long id);
+
+    boolean existsByPhoneNumberAndIdNot(String phoneNumber, long id);
+
 }

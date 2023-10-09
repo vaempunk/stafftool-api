@@ -17,5 +17,6 @@ public class EmployeeDto {
     private String country;
     private String city;
     private String address;
+    private Long teamId;
 
 }

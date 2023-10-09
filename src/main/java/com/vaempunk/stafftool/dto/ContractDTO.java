@@ -10,7 +10,7 @@ public class ContractDto {
 
     private Long id;
     private Long employeeId;
-    private Long teamId;
+    private Long departmentId;
     private String jobName;
     private LocalDate startDate;
     private LocalDate endDate;

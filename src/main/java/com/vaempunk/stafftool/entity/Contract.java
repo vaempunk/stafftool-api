@@ -24,7 +24,7 @@ public class Contract {
     private Employee employee;
 
     @ManyToOne
-    private Team team;
+    private Department department;
 
     private String jobName;
 
