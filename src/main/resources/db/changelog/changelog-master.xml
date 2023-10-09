@@ -5,27 +5,5 @@
     xmlns:pro="http://www.liquibase.org/xml/ns/pro"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
                         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
-    <changeSet author="lb-generated" id="1185214997195-1">
-        <createTable tableName="BONUS">
-            <column name="NAME" type="VARCHAR2(15)" />
-            <column name="JOB" type="VARCHAR2(255)" />
-            <column name="SAL" type="NUMBER(255)" />
-        </createTable>
-    </changeSet>
-    <changeSet author="lb-generated" id="1185214997195-2">
-        <createTable tableName="DEPT">
-            <column name="DEPTNO" type="INTEGER" />
-            <column name="DNAME" type="VARCHAR2(15)" />
-            <column name="LOC" type="VARCHAR2(255)" />
-        </createTable>
-    </changeSet>
-    <changeSet author="lb-generated" id="1185214997195-3">
-        <createView fullDefinition="false" viewName="myView2">SELECT "DEPT".DEPTNO,
-    "DEPT".DNAME
-   FROM "DEPT";</createView>
-    </changeSet>
-    <changeSet author="lb-generated" id="1185214997195-4">
-        <pro:createFunction functionName="myFunction" path="objects/function/myFunction.sql"
-            relativeToChangelogFile="true" />
-    </changeSet>
+    <includeAll path="v1/" relativeToChangelogFile="true" />
 </databaseChangeLog>
