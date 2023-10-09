@@ -1,4 +1,4 @@
-package com.vaempunk.stafftool.controller;
+package com.vaempunk.stafftool.rest;
 
 import java.util.List;
 
@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.service.TeamService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-public class TeamController {
+public class TeamResource {
 
     private final TeamService teamService;
 
@@ -38,10 +39,9 @@ public class TeamController {
         return teamService.getAllByDepartmentId(departmentId);
     }
 
-    @PostMapping("/departments/{departmentId}/teams")
+    @PostMapping("/teams")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public TeamDto add(@PathVariable("departmentId") Long departmentId, @RequestBody TeamDto teamDto) {
-        teamDto.setDepartmentId(departmentId);
+    public TeamDto add(@RequestBody @Valid TeamDto teamDto) {
         return teamService.add(teamDto);
     }
 

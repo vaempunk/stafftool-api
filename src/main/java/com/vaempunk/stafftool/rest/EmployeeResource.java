@@ -1,4 +1,4 @@
-package com.vaempunk.stafftool.controller;
+package com.vaempunk.stafftool.rest;
 
 import java.util.List;
 
@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vaempunk.stafftool.dto.EmployeeDto;
 import com.vaempunk.stafftool.service.EmployeeService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-public class EmployeeController {
+public class EmployeeResource {
 
     private final EmployeeService employeeService;
 
@@ -35,14 +36,14 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public EmployeeDto add(@RequestBody EmployeeDto employeeDto) {
+    public EmployeeDto add(@RequestBody @Valid EmployeeDto employeeDto) {
         return employeeService.add(employeeDto);
     }
 
     @PutMapping("/employees/{id}")
     public EmployeeDto update(
             @PathVariable("id") Long id,
-            @RequestBody EmployeeDto employeeDto) {
+            @RequestBody @Valid EmployeeDto employeeDto) {
         employeeDto.setId(id);
         return employeeService.update(employeeDto);
     }

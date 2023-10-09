@@ -1,4 +1,4 @@
-package com.vaempunk.stafftool.controller;
+package com.vaempunk.stafftool.rest;
 
 import java.util.List;
 
@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vaempunk.stafftool.dto.ContractDto;
 import com.vaempunk.stafftool.service.ContractService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-public class ContractController {
+public class ContractResource {
 
     private final ContractService contractService;
 
@@ -43,15 +44,16 @@ public class ContractController {
         return contractService.getAllByDepartmentId(departmentId);
     }
 
-    @PostMapping("/departments/{departmentId}/contracts")
+    @PostMapping("/contracts")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ContractDto add(@PathVariable("departmentId") Long departmentId, @RequestBody ContractDto newContractDto) {
-        newContractDto.setDepartmentId(departmentId);
+    public ContractDto add(@RequestBody @Valid ContractDto newContractDto) {
         return contractService.add(newContractDto);
     }
 
     @PutMapping("/contracts/{id}")
-    public ContractDto update(@PathVariable("id") Long id, @RequestBody ContractDto newContractDto) {
+    public ContractDto update(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid ContractDto newContractDto) {
         newContractDto.setId(id);
         return contractService.update(newContractDto);
     }
@@ -61,4 +63,5 @@ public class ContractController {
     public void delete(@PathVariable("id") Long id) {
         contractService.delete(id);
     }
+
 }

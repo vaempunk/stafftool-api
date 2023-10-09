@@ -1,4 +1,4 @@
-package com.vaempunk.stafftool.controller;
+package com.vaempunk.stafftool.rest;
 
 import java.util.List;
 
@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vaempunk.stafftool.dto.DepartmentDto;
 import com.vaempunk.stafftool.service.DepartmentService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-public class DepartmentController {
+public class DepartmentResource {
 
     private final DepartmentService departmentService;
 
@@ -35,12 +36,14 @@ public class DepartmentController {
 
     @PostMapping("/departments")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public DepartmentDto add(@RequestBody DepartmentDto departmentDto) {
+    public DepartmentDto add(@RequestBody @Valid DepartmentDto departmentDto) {
         return departmentService.add(departmentDto);
     }
 
     @PutMapping("/departments/{id}")
-    public DepartmentDto update(@PathVariable("id") Long id, @RequestBody DepartmentDto newDepartmentDto) {
+    public DepartmentDto update(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid DepartmentDto newDepartmentDto) {
         newDepartmentDto.setId(id);
         return departmentService.update(newDepartmentDto);
     }
