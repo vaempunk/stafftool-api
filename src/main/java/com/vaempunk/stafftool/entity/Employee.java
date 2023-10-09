@@ -32,7 +32,7 @@ public class Employee {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     private String country;
 
