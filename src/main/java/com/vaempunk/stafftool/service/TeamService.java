@@ -1,93 +1,69 @@
 package com.vaempunk.stafftool.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.entity.Team;
-import com.vaempunk.stafftool.exception.EntityExceptionType;
-import com.vaempunk.stafftool.exception.TeamException;
+import com.vaempunk.stafftool.exception.ResourceNotFoundException;
+import com.vaempunk.stafftool.repository.DepartmentRepository;
 import com.vaempunk.stafftool.repository.TeamRepository;
+import com.vaempunk.stafftool.util.mapper.TeamMapper;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class TeamService {
 
     private final TeamRepository teamRepository;
+    private final DepartmentRepository departmentRepository;
+    private final TeamMapper teamMapper;
 
-    // @Autowired
-    public TeamService(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
+    public TeamDto get(long id) {
+        return teamRepository.findById(id)
+                .map(teamMapper::toDto)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Team get(Integer id)
-            throws TeamException {
-
-        Optional<Team> teamOpt = teamRepository.findById(id);
-        if (teamOpt.isEmpty()) {
-            throw new TeamException(EntityExceptionType.NOT_FOUND);
-        }
-
-        return teamOpt.get();
+    public List<TeamDto> getAllByDepartmentId(long departmentId) {
+        return teamRepository.findAllByDepartmentId(departmentId).stream()
+                .map(teamMapper::toDto)
+                .toList();
     }
 
-    public List<Team> getAllByDepartmentId(Integer departmentId) {
-
-        return teamRepository.findAllByDepartmentId(departmentId);
+    public List<TeamDto> getAll() {
+        return teamRepository.findAll().stream()
+                .map(teamMapper::toDto)
+                .toList();
     }
 
-    public List<Team> getAll() {
-
-        List<Team> teams = teamRepository.findAll();
-
-        return teams;
-    }
-
-    public Team add(Team newTeam)
-            throws TeamException {
-
-        if (teamRepository.existsByName(newTeam.getName())) {
-            throw new TeamException(EntityExceptionType.ALREADY_EXISTS);
-        }
-
-        Team team = teamRepository.save(newTeam);
-
-        return team;
-    }
-
-    public Team update(Integer id, Team newTeam)
-            throws TeamException {
-
-        if (teamRepository.existsByNameAndIdNot(newTeam.getName(), id)) {
-            throw new TeamException(EntityExceptionType.ALREADY_EXISTS);
-        }
-
-        Optional<Team> teamOpt = teamRepository.findById(id);
-        if (teamOpt.isEmpty()) {
-            throw new TeamException(EntityExceptionType.NOT_FOUND);
-        }
-
-        Team team = teamOpt.get();
-        team.setDepartment(newTeam.getDepartment());
-        team.setName(newTeam.getName());
-        team.setDescription(newTeam.getDescription());
+    public TeamDto add(TeamDto newTeam) {
+        var team = new Team();
+        teamMapper.updateFromDto(team, newTeam);
+        var department = departmentRepository.findById(newTeam.getDepartmentId())
+                .orElseThrow(ResourceNotFoundException::new);
+        team.setDepartment(department);
         teamRepository.save(team);
-
-        return team;
+        return teamMapper.toDto(team);
     }
 
-    public Team delete(Integer id)
-            throws TeamException {
+    public TeamDto update(TeamDto newTeam) {
+        var team = teamRepository.findById(newTeam.getId())
+                .orElseThrow(ResourceNotFoundException::new);
+        teamMapper.updateFromDto(team, newTeam);
+        var department = departmentRepository.findById(newTeam.getDepartmentId())
+                .orElseThrow(ResourceNotFoundException::new);
+        team.setDepartment(department);
+        teamRepository.save(team);
+        return teamMapper.toDto(team);
+    }
 
-        Optional<Team> teamOpt = teamRepository.findById(id);
-        if (teamOpt.isEmpty()) {
-            throw new TeamException(EntityExceptionType.NOT_FOUND);
-        }
-
-        Team team = teamOpt.get();
-        teamRepository.delete(team);
-
-        return team;
+    public void delete(long id) {
+        if (!teamRepository.existsById(id))
+            throw new ResourceNotFoundException();
+        teamRepository.deleteById(id);
     }
 
 }

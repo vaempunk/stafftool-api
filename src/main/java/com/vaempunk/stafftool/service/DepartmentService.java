@@ -1,86 +1,55 @@
 package com.vaempunk.stafftool.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.vaempunk.stafftool.dto.DepartmentDto;
 import com.vaempunk.stafftool.entity.Department;
-import com.vaempunk.stafftool.exception.DepartmentException;
-import com.vaempunk.stafftool.exception.EntityExceptionType;
+import com.vaempunk.stafftool.exception.ResourceNotFoundException;
 import com.vaempunk.stafftool.repository.DepartmentRepository;
+import com.vaempunk.stafftool.util.mapper.DepartmentMapper;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentMapper departmentMapper;
 
-    // @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
+    public DepartmentDto get(long id) {
+        return departmentRepository.findById(id)
+                .map(departmentMapper::toDto)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Department get(Integer id)
-            throws DepartmentException {
-
-        Optional<Department> departmentOpt = departmentRepository.findById(id);
-        if (departmentOpt.isEmpty()) {
-            throw new DepartmentException(EntityExceptionType.NOT_FOUND);
-        }
-
-        return departmentOpt.get();
+    public List<DepartmentDto> getAll() {
+        return departmentRepository.findAll().stream()
+                .map(departmentMapper::toDto)
+                .toList();
     }
 
-    public List<Department> getAll() {
-
-        List<Department> departments = departmentRepository.findAll();
-
-        return departments;
-    }
-
-    public Department add(Department newDepartment)
-            throws DepartmentException {
-
-        if (departmentRepository.existsByName(newDepartment.getName())) {
-            throw new DepartmentException(EntityExceptionType.ALREADY_EXISTS);
-        }
-
-        Department department = departmentRepository.save(newDepartment);
-
-        return department;
-    }
-
-    public Department update(Integer id, Department newDepartment)
-            throws DepartmentException {
-
-        if (departmentRepository.existsByNameAndIdNot(newDepartment.getName(), id)) {
-            throw new DepartmentException(EntityExceptionType.ALREADY_EXISTS);
-        }
-
-        Optional<Department> departmentOpt = departmentRepository.findById(id);
-        if (departmentOpt.isEmpty()) {
-            throw new DepartmentException(EntityExceptionType.NOT_FOUND);
-        }
-
-        Department department = departmentOpt.get();
-        department.setName(newDepartment.getName());
-        department.setDescription(newDepartment.getDescription());
+    public DepartmentDto add(DepartmentDto newDepartment) {
+        var department = new Department();
+        departmentMapper.updateFromDto(department, newDepartment);
         departmentRepository.save(department);
-
-        return department;
+        return departmentMapper.toDto(department);
     }
 
-    public Department delete(Integer id)
-            throws DepartmentException {
-
-        Optional<Department> departmentOpt = departmentRepository.findById(id);
-        if (departmentOpt.isEmpty()) {
-            throw new DepartmentException(EntityExceptionType.NOT_FOUND);
-        }
-
-        Department department = departmentOpt.get();
-        departmentRepository.delete(department);
-
-        return department;
+    public DepartmentDto update(DepartmentDto newDepartment) {
+        var department = departmentRepository.findById(newDepartment.getId())
+                .orElseThrow(ResourceNotFoundException::new);
+        departmentMapper.updateFromDto(department, newDepartment);
+        departmentRepository.save(department);
+        return departmentMapper.toDto(department);
     }
+
+    public void delete(long id) {
+        if (!departmentRepository.existsById(id))
+            throw new ResourceNotFoundException();
+        departmentRepository.deleteById(id);
+    }
+
 }

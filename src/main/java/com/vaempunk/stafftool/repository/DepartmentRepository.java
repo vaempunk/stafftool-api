@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.vaempunk.stafftool.entity.Department;
 
-public interface DepartmentRepository extends CrudRepository<Department, Integer> {
+public interface DepartmentRepository extends CrudRepository<Department, Long> {
 
     public List<Department> findAll();
 
@@ -15,5 +15,5 @@ public interface DepartmentRepository extends CrudRepository<Department, Integer
 
     public boolean existsByName(String name);
 
-    public boolean existsByNameAndIdNot(String name, Integer id);
+    public boolean existsByNameAndIdNot(String name, long id);
 }

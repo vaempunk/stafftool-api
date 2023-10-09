@@ -1,88 +1,83 @@
 package com.vaempunk.stafftool.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.vaempunk.stafftool.dto.ContractDto;
 import com.vaempunk.stafftool.entity.Contract;
-import com.vaempunk.stafftool.exception.ContractException;
-import com.vaempunk.stafftool.exception.EntityExceptionType;
+import com.vaempunk.stafftool.exception.ResourceNotFoundException;
 import com.vaempunk.stafftool.repository.ContractRepository;
+import com.vaempunk.stafftool.repository.EmployeeRepository;
+import com.vaempunk.stafftool.repository.TeamRepository;
+import com.vaempunk.stafftool.util.mapper.ContractMapper;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class ContractService {
 
     private final ContractRepository contractRepository;
+    private final EmployeeRepository employeeRepository;
+    private final TeamRepository teamRepository;
+    private final ContractMapper contractMapper;
 
-    public ContractService(ContractRepository contractRepository) {
-
-        this.contractRepository = contractRepository;
+    public ContractDto get(long id) {
+        return contractRepository.findById(id)
+                .map(contractMapper::toDto)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Contract get(Integer id) throws ContractException {
-
-        Optional<Contract> contractOpt = contractRepository.findById(id);
-        if (contractOpt.isEmpty()) {
-            throw new ContractException(EntityExceptionType.NOT_FOUND);
-        }
-
-        return contractOpt.get();
+    public List<ContractDto> getAll() {
+        return contractRepository.findAll().stream()
+                .map(contractMapper::toDto)
+                .toList();
     }
 
-    public List<Contract> getAll() {
-
-        List<Contract> contracts = contractRepository.findAll();
-
-        return contracts;
+    public List<ContractDto> getAllByEmployeeId(long employeeId) {
+        return contractRepository.findAllByEmployeeId(employeeId).stream()
+                .map(contractMapper::toDto)
+                .toList();
     }
 
-    public List<Contract> getAllByEmployeeId(Integer employeeId) {
-
-        return contractRepository.findAllByEmployeeId(employeeId);
+    public List<ContractDto> getAllByTeamId(long teamId) {
+        return contractRepository.findAllByTeamId(teamId).stream()
+                .map(contractMapper::toDto)
+                .toList();
     }
 
-    public List<Contract> getAllByTeamId(Integer teamId) {
-
-        return contractRepository.findAllByTeamId(teamId);
-    }
-
-    public Contract add(Contract newContract) {
-
-        Contract contract = contractRepository.save(newContract);
-
-        return contract;
-    }
-
-    public Contract update(Integer id, Contract newContract)
-            throws ContractException {
-
-        Optional<Contract> contractOpt = contractRepository.findById(id);
-        if (contractOpt.isEmpty()) {
-            throw new ContractException(EntityExceptionType.NOT_FOUND);
-        }
-
-        Contract contract = contractOpt.get();
-        contract.setEmployee(newContract.getEmployee());
-        contract.setTeam(newContract.getTeam());
-        contract.setJobName(newContract.getJobName());
-        contract.setStartDate(newContract.getStartDate());
-        contract.setEndDate(newContract.getEndDate());
+    public ContractDto add(ContractDto newContract) {
+        var contract = new Contract();
+        contractMapper.updateFromDto(contract, newContract);
+        var team = teamRepository.findById(newContract.getTeamId())
+                .orElseThrow(ResourceNotFoundException::new);
+        contract.setTeam(team);
+        var employee = employeeRepository.findById(newContract.getEmployeeId())
+                .orElseThrow(ResourceNotFoundException::new);
+        contract.setEmployee(employee);
         contractRepository.save(contract);
-
-        return contract;
+        return contractMapper.toDto(contract);
     }
 
-    public Contract delete(Integer id) throws ContractException {
+    public ContractDto update(ContractDto updatedContract) {
+        var contract = contractRepository.findById(updatedContract.getId())
+                .orElseThrow(ResourceNotFoundException::new);
+        contractMapper.updateFromDto(contract, updatedContract);
+        var team = teamRepository.findById(updatedContract.getTeamId())
+                .orElseThrow(ResourceNotFoundException::new);
+        contract.setTeam(team);
+        var employee = employeeRepository.findById(updatedContract.getEmployeeId())
+                .orElseThrow(ResourceNotFoundException::new);
+        contract.setEmployee(employee);
+        contractRepository.save(contract);
+        return contractMapper.toDto(contract);
+    }
 
-        Optional<Contract> contractOpt = contractRepository.findById(id);
-        if (contractOpt.isEmpty()) {
-            throw new ContractException(EntityExceptionType.NOT_FOUND);
+    public void delete(long id) {
+        if (!contractRepository.existsById(id)) {
+            throw new ResourceNotFoundException();
         }
-
-        Contract contract = contractOpt.get();
-        contractRepository.delete(contract);
-
-        return contract;
+        contractRepository.deleteById(id);
     }
 }

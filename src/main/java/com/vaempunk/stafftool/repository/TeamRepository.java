@@ -6,15 +6,15 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.vaempunk.stafftool.entity.Team;
 
-public interface TeamRepository extends CrudRepository<Team, Integer> {
+public interface TeamRepository extends CrudRepository<Team, Long> {
 
     public List<Team> findAll();
 
-    public List<Team> findAllByDepartmentId(Integer departmentId);
+    public List<Team> findAllByDepartmentId(long departmentId);
 
     public Team findByName(String name);
 
     public boolean existsByName(String name);
 
-    public boolean existsByNameAndIdNot(String name, Integer id);
+    public boolean existsByNameAndIdNot(String name, long id);
 }

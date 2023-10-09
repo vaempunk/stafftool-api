@@ -2,18 +2,18 @@ package com.vaempunk.stafftool.util.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.vaempunk.stafftool.dto.EmployeeDTO;
+import com.vaempunk.stafftool.dto.EmployeeDto;
 import com.vaempunk.stafftool.entity.Employee;
-import com.vaempunk.stafftool.entity.enumtype.GenderType;
+import com.vaempunk.stafftool.entity.Gender;
 
 @Component
 public class EmployeeMapper {
-    
-    public EmployeeDTO toDTO(Employee e) {
-        EmployeeDTO dto = new EmployeeDTO();
+
+    public EmployeeDto toDto(Employee e) {
+        var dto = new EmployeeDto();
         dto.setId(e.getId());
-        dto.setFirstName(e.getFirstName());
-        dto.setLastName(e.getLastName());
+        dto.setFirstname(e.getFirstname());
+        dto.setLastname(e.getLastname());
         dto.setEmail(e.getEmail());
         dto.setPhoneNumber(e.getPhoneNumber());
         dto.setGender(e.getGender().toString());
@@ -24,18 +24,16 @@ public class EmployeeMapper {
         return dto;
     }
 
-    public Employee toEntity(EmployeeDTO dto) {
-        Employee e = new Employee();
-        e.setId(dto.getId());
-        e.setFirstName(dto.getFirstName());
-        e.setLastName(dto.getLastName());
-        e.setEmail(dto.getEmail());
-        e.setPhoneNumber(dto.getPhoneNumber());
-        e.setGender(GenderType.from(dto.getGender()));
-        e.setBirthDate(dto.getBirthDate());
-        e.setCountry(dto.getCountry());
-        e.setCity(dto.getCity());
-        e.setAddress(dto.getAddress());
-        return e;
+    public void updateFromDto(Employee employee, EmployeeDto dto) {
+        employee.setFirstname(dto.getFirstname());
+        employee.setLastname(dto.getLastname());
+        employee.setEmail(dto.getEmail());
+        employee.setPhoneNumber(dto.getPhoneNumber());
+        employee.setGender(Gender.from(dto.getGender()));
+        employee.setBirthDate(dto.getBirthDate());
+        employee.setCountry(dto.getCountry());
+        employee.setCity(dto.getCity());
+        employee.setAddress(dto.getAddress());
     }
+
 }

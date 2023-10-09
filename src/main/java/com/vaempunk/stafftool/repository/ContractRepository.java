@@ -6,11 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.vaempunk.stafftool.entity.Contract;
 
-public interface ContractRepository extends CrudRepository<Contract, Integer> {
+public interface ContractRepository extends CrudRepository<Contract, Long> {
     
     List<Contract> findAll();
 
-    List<Contract> findAllByEmployeeId(Integer employeeId);
+    List<Contract> findAllByEmployeeId(long employeeId);
 
-    List<Contract> findAllByTeamId(Integer teamId);
+    List<Contract> findAllByTeamId(long teamId);
 }
