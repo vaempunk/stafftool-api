@@ -32,7 +32,7 @@ public class EmployeeDto {
 
     @NotBlank
     @Size(max = 64)
-    private String phoneNumber;
+    private String phone;
 
     @NotBlank
     @Pattern(regexp = "^(M|F)$")

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.vaempunk.stafftool.dto.DepartmentDto;
 import com.vaempunk.stafftool.entity.Department;
+import com.vaempunk.stafftool.exception.ResourceConflictException;
 import com.vaempunk.stafftool.exception.ResourceNotFoundException;
 import com.vaempunk.stafftool.repository.DepartmentRepository;
 import com.vaempunk.stafftool.util.mapper.DepartmentMapper;
@@ -32,6 +33,8 @@ public class DepartmentService {
     }
 
     public DepartmentDto add(DepartmentDto newDepartment) {
+        if (!isDepartmentNameAvailable(newDepartment.getName()))
+            throw new ResourceConflictException();
         var department = new Department();
         departmentMapper.updateFromDto(department, newDepartment);
         departmentRepository.save(department);
@@ -41,6 +44,9 @@ public class DepartmentService {
     public DepartmentDto update(DepartmentDto newDepartment) {
         var department = departmentRepository.findById(newDepartment.getId())
                 .orElseThrow(ResourceNotFoundException::new);
+        if (!(department.getName().equals(newDepartment.getName())
+                || isDepartmentNameAvailable(newDepartment.getName())))
+            throw new ResourceConflictException();
         departmentMapper.updateFromDto(department, newDepartment);
         departmentRepository.save(department);
         return departmentMapper.toDto(department);
@@ -50,6 +56,10 @@ public class DepartmentService {
         if (!departmentRepository.existsById(id))
             throw new ResourceNotFoundException();
         departmentRepository.deleteById(id);
+    }
+
+    public boolean isDepartmentNameAvailable(String name) {
+        return !departmentRepository.existsByName(name);
     }
 
 }

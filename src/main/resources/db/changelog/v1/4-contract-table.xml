@@ -11,12 +11,14 @@
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="employee_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="contract_employee_fk" referencedTableName="employees"
-                    referencedColumnNames="id" deleteCascade="true" />
+                <constraints nullable="false" foreignKeyName="contract_employee_fk"
+                    referencedTableName="employees"
+                    referencedColumnNames="id" />
             </column>
             <column name="department_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="contract_department_fk" referencedTableName="departments"
-                    referencedColumnNames="id" deleteCascade="true" />
+                <constraints nullable="false" foreignKeyName="contract_department_fk"
+                    referencedTableName="departments"
+                    referencedColumnNames="id" />
             </column>
             <column name="job_name" type="varchar(255)">
                 <constraints nullable="false" />

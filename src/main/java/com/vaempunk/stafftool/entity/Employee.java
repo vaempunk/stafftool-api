@@ -27,7 +27,7 @@ public class Employee {
 
     private String email;
 
-    private String phoneNumber;
+    private String phone;
 
     @Enumerated(value = EnumType.STRING)
     private Gender gender;

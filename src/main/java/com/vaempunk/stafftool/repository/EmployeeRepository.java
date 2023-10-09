@@ -14,10 +14,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     boolean existsByEmail(String email);
 
-    boolean existsByPhoneNumber(String phoneNumber);
-
-    boolean existsByEmailAndIdNot(String email, long id);
-
-    boolean existsByPhoneNumberAndIdNot(String phoneNumber, long id);
+    boolean existsByPhone(String phone);
 
 }

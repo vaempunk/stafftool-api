@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vaempunk.stafftool.dto.AvailabilityResponse;
 import com.vaempunk.stafftool.dto.DepartmentDto;
 import com.vaempunk.stafftool.service.DepartmentService;
 
@@ -52,6 +54,12 @@ public class DepartmentResource {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         departmentService.delete(id);
+    }
+
+    @GetMapping("/departments/availability")
+    public AvailabilityResponse isPhoneAvailable(@RequestParam(value = "name") String name) {
+        var available = departmentService.isDepartmentNameAvailable(name);
+        return new AvailabilityResponse(available);
     }
 
 }

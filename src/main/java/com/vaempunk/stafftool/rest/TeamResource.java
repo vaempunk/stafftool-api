@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vaempunk.stafftool.dto.AvailabilityResponse;
 import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.service.TeamService;
 
@@ -55,6 +57,14 @@ public class TeamResource {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         teamService.delete(id);
+    }
+
+    @GetMapping("/teams/availability")
+    public AvailabilityResponse isNameAvailable(
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "departmentId") Long departmentId) {
+        var available = teamService.isTeamNameAvailable(departmentId, name);
+        return new AvailabilityResponse(available);
     }
 
 }

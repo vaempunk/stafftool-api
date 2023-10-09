@@ -12,10 +12,6 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
 
     List<Team> findAllByDepartmentId(long departmentId);
 
-    Team findByName(String name);
-
-    boolean existsByName(String name);
-
-    boolean existsByNameAndIdNot(String name, long id);
+    boolean existsByDepartmentIdAndNameIgnoreCase(long departmentId, String name);
 
 }

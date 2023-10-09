@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vaempunk.stafftool.dto.AvailabilityResponse;
 import com.vaempunk.stafftool.dto.EmployeeDto;
 import com.vaempunk.stafftool.service.EmployeeService;
 
@@ -52,6 +54,19 @@ public class EmployeeResource {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         employeeService.delete(id);
+    }
+
+    @GetMapping("/employees/availability")
+    public AvailabilityResponse isPhoneOrEmailAvailable(
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "email", required = false) String email) {
+        if (phone != null && !employeeService.isPhoneAvailable(phone)) {
+            return new AvailabilityResponse(false);
+        }
+        if (email != null && !employeeService.isEmailAvailable(email)) {
+            return new AvailabilityResponse(false);    
+        }
+        return new AvailabilityResponse(true);
     }
 
 }
