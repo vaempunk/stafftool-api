@@ -1,10 +1,10 @@
 package com.vaempunk.stafftool.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.vaempunk.stafftool.dto.EmployeeDto;
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.entity.Employee;
 import com.vaempunk.stafftool.exception.ResourceNotFoundException;
 import com.vaempunk.stafftool.repository.EmployeeRepository;
@@ -25,10 +25,10 @@ public class EmployeeService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public List<EmployeeDto> getAll() {
-        return employeeRepository.findAll().stream()
-                .map(employeeMapper::toDto)
-                .toList();
+    public PageDto<EmployeeDto> getAll(Pageable pageable) {
+        var employees = employeeRepository.findAll(pageable)
+                .map(employeeMapper::toDto);
+        return new PageDto<>(employees.getContent(), employees.getTotalPages(), employees.getNumber());
     }
 
     public EmployeeDto add(EmployeeDto newEmployee) {

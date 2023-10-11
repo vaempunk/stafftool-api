@@ -1,7 +1,6 @@
 package com.vaempunk.stafftool.rest;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vaempunk.stafftool.dto.AvailabilityResponse;
 import com.vaempunk.stafftool.dto.EmployeeDto;
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.service.EmployeeService;
 
 import jakarta.validation.Valid;
@@ -32,8 +32,8 @@ public class EmployeeResource {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDto> getAll() {
-        return employeeService.getAll();
+    public PageDto<EmployeeDto> getAll(Pageable pageable) {
+        return employeeService.getAll(pageable);
     }
 
     @PostMapping("/employees")

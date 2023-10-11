@@ -1,7 +1,6 @@
 package com.vaempunk.stafftool.rest;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vaempunk.stafftool.dto.ContractDto;
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.service.ContractService;
 
 import jakarta.validation.Valid;
@@ -30,18 +30,18 @@ public class ContractResource {
     }
 
     @GetMapping("/contracts")
-    public List<ContractDto> getAll() {
-        return contractService.getAll();
+    public PageDto<ContractDto> getAll(Pageable pageable) {
+        return contractService.getAll(pageable);
     }
 
     @GetMapping("/employees/{employeeId}/contracts")
-    public List<ContractDto> getAllByEmployeeId(@PathVariable("employeeId") Long employeeId) {
-        return contractService.getAllByEmployeeId(employeeId);
+    public PageDto<ContractDto> getAllByEmployeeId(@PathVariable("employeeId") Long employeeId, Pageable pageable) {
+        return contractService.getAllByEmployeeId(employeeId, pageable);
     }
 
     @GetMapping("/departments/{departmentId}/contracts")
-    public List<ContractDto> getAllByDepartmentId(@PathVariable("departmentId") Long departmentId) {
-        return contractService.getAllByDepartmentId(departmentId);
+    public PageDto<ContractDto> getAllByDepartmentId(@PathVariable("departmentId") Long departmentId, Pageable pageable) {
+        return contractService.getAllByDepartmentId(departmentId, pageable);
     }
 
     @PostMapping("/contracts")

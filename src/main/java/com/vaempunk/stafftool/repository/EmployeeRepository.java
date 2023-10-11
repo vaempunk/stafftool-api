@@ -1,16 +1,16 @@
 package com.vaempunk.stafftool.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import com.vaempunk.stafftool.entity.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    List<Employee> findAll();
+    Page<Employee> findAll(Pageable pageable);
 
-    List<Employee> findAllByTeamId(long teamId);
+    Page<Employee> findAllByTeamId(long teamId, Pageable pageable);
 
     boolean existsByEmail(String email);
 

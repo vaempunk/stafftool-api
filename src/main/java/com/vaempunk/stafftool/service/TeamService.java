@@ -1,9 +1,9 @@
 package com.vaempunk.stafftool.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.entity.Team;
 import com.vaempunk.stafftool.exception.ResourceConflictException;
@@ -28,16 +28,16 @@ public class TeamService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public List<TeamDto> getAllByDepartmentId(long departmentId) {
-        return teamRepository.findAllByDepartmentId(departmentId).stream()
-                .map(teamMapper::toDto)
-                .toList();
+    public PageDto<TeamDto> getAllByDepartmentId(long departmentId, Pageable pageable) {
+        var teams = teamRepository.findAllByDepartmentId(departmentId, pageable)
+                .map(teamMapper::toDto);
+        return new PageDto<>(teams.getContent(), teams.getTotalPages(), teams.getNumber());
     }
 
-    public List<TeamDto> getAll() {
-        return teamRepository.findAll().stream()
-                .map(teamMapper::toDto)
-                .toList();
+    public PageDto<TeamDto> getAll(Pageable pageable) {
+        var teams = teamRepository.findAll(pageable)
+                .map(teamMapper::toDto);
+        return new PageDto<>(teams.getContent(), teams.getTotalPages(), teams.getNumber());
     }
 
     public TeamDto add(TeamDto newTeam) {

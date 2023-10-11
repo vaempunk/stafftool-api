@@ -1,7 +1,6 @@
 package com.vaempunk.stafftool.rest;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vaempunk.stafftool.dto.AvailabilityResponse;
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.service.TeamService;
 
@@ -32,13 +32,13 @@ public class TeamResource {
     }
 
     @GetMapping("/teams")
-    public List<TeamDto> getAll() {
-        return teamService.getAll();
+    public PageDto<TeamDto> getAll(Pageable pageable) {
+        return teamService.getAll(pageable);
     }
 
     @GetMapping("/departments/{departmentId}/teams")
-    public List<TeamDto> getAllByDepartmentName(@PathVariable("departmentId") Long departmentId) {
-        return teamService.getAllByDepartmentId(departmentId);
+    public PageDto<TeamDto> getAllByDepartmentName(@PathVariable("departmentId") Long departmentId, Pageable pageable) {
+        return teamService.getAllByDepartmentId(departmentId, pageable);
     }
 
     @PostMapping("/teams")

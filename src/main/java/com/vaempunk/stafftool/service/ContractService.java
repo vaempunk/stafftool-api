@@ -1,10 +1,10 @@
 package com.vaempunk.stafftool.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.vaempunk.stafftool.dto.ContractDto;
+import com.vaempunk.stafftool.dto.PageDto;
 import com.vaempunk.stafftool.entity.Contract;
 import com.vaempunk.stafftool.exception.ResourceNotFoundException;
 import com.vaempunk.stafftool.repository.ContractRepository;
@@ -29,22 +29,22 @@ public class ContractService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public List<ContractDto> getAll() {
-        return contractRepository.findAll().stream()
-                .map(contractMapper::toDto)
-                .toList();
+    public PageDto<ContractDto> getAll(Pageable pageable) {
+        var contracts = contractRepository.findAll(pageable)
+                .map(contractMapper::toDto);
+        return new PageDto<>(contracts.getContent(), contracts.getTotalPages(), contracts.getNumber());
     }
 
-    public List<ContractDto> getAllByEmployeeId(long employeeId) {
-        return contractRepository.findAllByEmployeeId(employeeId).stream()
-                .map(contractMapper::toDto)
-                .toList();
+    public PageDto<ContractDto> getAllByEmployeeId(long employeeId, Pageable pageable) {
+        var contracts = contractRepository.findAllByEmployeeId(employeeId, pageable)
+                .map(contractMapper::toDto);
+        return new PageDto<>(contracts.getContent(), contracts.getTotalPages(), contracts.getNumber());
     }
 
-    public List<ContractDto> getAllByDepartmentId(long teamId) {
-        return contractRepository.findAllByDepartmentId(teamId).stream()
-                .map(contractMapper::toDto)
-                .toList();
+    public PageDto<ContractDto> getAllByDepartmentId(long teamId, Pageable pageable) {
+        var contracts = contractRepository.findAllByDepartmentId(teamId, pageable)
+                .map(contractMapper::toDto);
+        return new PageDto<>(contracts.getContent(), contracts.getTotalPages(), contracts.getNumber());
     }
 
     public ContractDto add(ContractDto newContract) {
