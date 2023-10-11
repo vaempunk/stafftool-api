@@ -1,5 +1,6 @@
 package com.vaempunk.stafftool.rest;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,17 +31,21 @@ public class ContractResource {
     }
 
     @GetMapping("/contracts")
-    public PageDto<ContractDto> getAll(Pageable pageable) {
+    public PageDto<ContractDto> getAll(@ParameterObject Pageable pageable) {
         return contractService.getAll(pageable);
     }
 
     @GetMapping("/employees/{employeeId}/contracts")
-    public PageDto<ContractDto> getAllByEmployeeId(@PathVariable("employeeId") Long employeeId, Pageable pageable) {
+    public PageDto<ContractDto> getAllByEmployeeId(
+            @PathVariable("employeeId") Long employeeId,
+            @ParameterObject Pageable pageable) {
         return contractService.getAllByEmployeeId(employeeId, pageable);
     }
 
     @GetMapping("/departments/{departmentId}/contracts")
-    public PageDto<ContractDto> getAllByDepartmentId(@PathVariable("departmentId") Long departmentId, Pageable pageable) {
+    public PageDto<ContractDto> getAllByDepartmentId(
+            @PathVariable("departmentId") Long departmentId,
+            @ParameterObject Pageable pageable) {
         return contractService.getAllByDepartmentId(departmentId, pageable);
     }
 

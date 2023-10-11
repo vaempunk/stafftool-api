@@ -1,5 +1,6 @@
 package com.vaempunk.stafftool.rest;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class DepartmentResource {
     }
 
     @GetMapping("/departments")
-    public PageDto<DepartmentDto> getAll(Pageable pageable) {
+    public PageDto<DepartmentDto> getAll(@ParameterObject Pageable pageable) {
         return departmentService.getAll(pageable);
     }
 
