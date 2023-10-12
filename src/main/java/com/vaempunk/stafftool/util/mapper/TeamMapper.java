@@ -1,25 +1,21 @@
 package com.vaempunk.stafftool.util.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.MappingConstants.ComponentModel;
 
 import com.vaempunk.stafftool.dto.TeamDto;
 import com.vaempunk.stafftool.entity.Team;
 
-@Component
-public class TeamMapper {
+@Mapper(componentModel = ComponentModel.SPRING)
+public interface TeamMapper {
+    
+    @Mapping(target = "departmentId", source = "department.id")
+    TeamDto toDto(Team team);
 
-    public TeamDto toDto(Team e) {
-        var dto = new TeamDto();
-        dto.setId(e.getId());
-        dto.setDepartmentId(e.getDepartment().getId());
-        dto.setName(e.getName());
-        dto.setDescription(e.getDescription());
-        return dto;
-    }
-
-    public void updateFromDto(Team team, TeamDto dto) {
-        team.setName(dto.getName());
-        team.setDescription(dto.getDescription());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "department", ignore = true)
+    void updateFromDto(@MappingTarget Team team, TeamDto teamDto);
 
 }

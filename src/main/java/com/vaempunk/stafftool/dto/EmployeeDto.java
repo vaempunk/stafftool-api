@@ -38,7 +38,7 @@ public class EmployeeDto {
     @Pattern(regexp = "^(M|F)$")
     private String gender;
 
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     private String country;
 

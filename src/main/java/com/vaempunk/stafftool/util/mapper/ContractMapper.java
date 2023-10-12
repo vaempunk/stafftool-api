@@ -1,30 +1,23 @@
 package com.vaempunk.stafftool.util.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants.ComponentModel;
+import org.mapstruct.MappingTarget;
 
 import com.vaempunk.stafftool.dto.ContractDto;
 import com.vaempunk.stafftool.entity.Contract;
 
-@Component
-public class ContractMapper {
+@Mapper(componentModel = ComponentModel.SPRING)
+public interface ContractMapper {
 
-    public ContractDto toDto(Contract e) {
-        var dto = new ContractDto();
-        dto.setId(e.getId());
-        dto.setEmployeeId(e.getEmployee().getId());
-        dto.setDepartmentId(e.getDepartment().getId());
-        dto.setJobName(e.getJobName());
-        dto.setStartDate(e.getStartDate());
-        dto.setEndDate(e.getEndDate());
-        dto.setSalary(e.getSalary());
-        return dto;
-    }
+    @Mapping(target = "employeeId", source = "employee.id")
+    @Mapping(target = "departmentId", source = "department.id")
+    ContractDto toDto(Contract contract);
 
-    public void updateFromDto(Contract contract, ContractDto dto) {
-        contract.setJobName(dto.getJobName());
-        contract.setStartDate(dto.getStartDate());
-        contract.setEndDate(dto.getEndDate());
-        contract.setSalary(dto.getSalary());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "employee", ignore = true)
+    @Mapping(target = "department", ignore = true)
+    void updateFromDto(@MappingTarget Contract contract, ContractDto dto);
 
 }
