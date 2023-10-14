@@ -1,0 +1,39 @@
+# STAFFTOOL REST API
+# TEAM RESOURCE
+
+@baseUrl = http://localhost:8080
+
+### Get team
+GET {{baseUrl}}/teams/1
+
+### Get all teams
+GET {{baseUrl}}/teams
+
+### Get all teams by department id
+GET {{baseUrl}}/departments/1/teams
+
+### Get team name availability
+GET {{baseUrl}}/teams/availability?name=team&departmentId=2
+
+### Create new team
+POST {{baseUrl}}/teams
+Content-Type: application/json
+
+{
+    "departmentId": 2,
+    "name": "team",
+    "description": ""
+}
+
+###  Update team
+PUT {{baseUrl}}/teams/1
+Content-Type: application/json
+
+{
+    "departmentId": 2,
+    "name": "team",
+    "description": ""
+}
+
+### Delete team
+DELETE {{baseUrl}}/teams/1

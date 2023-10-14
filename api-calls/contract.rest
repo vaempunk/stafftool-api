@@ -1,0 +1,45 @@
+# STAFFTOOL REST API
+# CONTRACT RESOURCE
+
+@baseUrl = http://localhost:8080
+
+### Get contract
+GET {{baseUrl}}/contracts/1
+
+### Get all contracts
+GET {{baseUrl}}/contracts
+
+### Get contracts by employee
+GET {{baseUrl}}/employees/1/contracts
+
+### Get contracts by department
+GET {{baseUrl}}/departments/1/contracts
+
+### Create new contract
+POST {{baseUrl}}/contracts
+Content-Type: application/json
+
+{
+    "employeeId": 1,
+    "departmentId": 1,
+    "jobName": "builder",
+    "startDate": "2022-01-01",
+    "endDate": "2023-01-01",
+    "salary": "44990"
+}
+
+### Update contract
+PUT {{baseUrl}}/contracts/1
+Content-Type: application/json
+
+{
+    "employeeId": 1,
+    "departmentId": 1,
+    "jobName": "director",
+    "startDate": "2022-01-01",
+    "endDate": "2025-01-01",
+    "salary": "47990"
+}
+
+### Delete contract
+DELETE {{baseUrl}}/contracts/1

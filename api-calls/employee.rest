@@ -1,0 +1,53 @@
+# STAFFTOOL REST API
+# EMPLOYEE RESOURCE
+
+@baseUrl = http://localhost:8080
+
+### Get employee
+GET {{baseUrl}}/employees/1
+
+### Get all employees
+GET {{baseUrl}}/employees?page=0&size=10
+
+### Get all employees by department
+GET {{baseUrl}}/teams/1/employees
+
+### Get employee name availability
+GET {{baseUrl}}/employees/availability?phone=+89374964357
+
+### Create new employee
+POST {{baseUrl}}/employees
+Content-Type: application/json
+
+{
+    "teamId": 1,
+    "firstname": "ivan",
+    "lastname": "ivanov",
+    "email": "ivanivanov@mail.com",
+    "phone": "89271111111",
+    "gender": "M",
+    "birthdate": "1990-01-01",
+    "country": "Russia",
+    "city": "Moscow",
+    "address": "Lermontov, 14, 41"
+}
+
+###  Update employee
+PUT {{baseUrl}}/employees/1
+Content-Type: application/json
+
+{
+    "teamId": 1,
+    "firstname": "ivan",
+    "lastname": "ivanov",
+    "email": "ivanivanov@mail.com",
+    "phone": "89272222222",
+    "gender": "M",
+    "birthdate": "1990-01-01",
+    "country": "Russia",
+    "city": "Tomsk",
+    "address": "Pozharnogo, 11, 6"
+}
+
+### Delete departemployeement
+DELETE {{baseUrl}}/employees/1

@@ -1,0 +1,34 @@
+# STAFFTOOL REST API
+# DEPARTMENT RESOURCE
+
+@baseUrl = http://localhost:8080
+
+### Get department
+GET {{baseUrl}}/departments/1
+
+### Get all departments
+GET {{baseUrl}}/departments
+
+### Get department name availability
+GET {{baseUrl}}/departments/availability?name=department
+
+### Create new department
+POST {{baseUrl}}/departments
+Content-Type: application/json
+
+{
+    "name": "department",
+    "description": ""
+}
+
+###  Update department
+PUT {{baseUrl}}/departments/1
+Content-Type: application/json
+
+{
+    "name": "department",
+    "description": "desc"
+}
+
+### Delete department
+DELETE {{baseUrl}}/departments/1

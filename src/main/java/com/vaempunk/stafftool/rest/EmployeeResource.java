@@ -1,5 +1,7 @@
 package com.vaempunk.stafftool.rest;
 
+import java.util.Optional;
+
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,13 @@ public class EmployeeResource {
         return employeeService.getAll(pageable);
     }
 
+    @GetMapping("/teams/{teamId}/employees")
+    public PageDto<EmployeeDto> getAllByTeamId(
+            @PathVariable("teamId") Long teamId,
+            @ParameterObject Pageable pageable) {
+        return employeeService.getAllByTeamId(teamId, pageable);
+    }                
+
     @PostMapping("/employees")
     @ResponseStatus(code = HttpStatus.CREATED)
     public EmployeeDto add(@RequestBody @Valid EmployeeDto employeeDto) {
@@ -59,12 +68,12 @@ public class EmployeeResource {
 
     @GetMapping("/employees/availability")
     public AvailabilityResponse isPhoneOrEmailAvailable(
-            @RequestParam(value = "phone", required = false) String phone,
-            @RequestParam(value = "email", required = false) String email) {
-        if (phone != null && !employeeService.isPhoneAvailable(phone)) {
+            @RequestParam(value = "phone", required = false) Optional<String> phone,
+            @RequestParam(value = "email", required = false) Optional<String> email) {
+        if (phone.isPresent() && !employeeService.isPhoneAvailable(phone.get())) {
             return new AvailabilityResponse(false);
         }
-        if (email != null && !employeeService.isEmailAvailable(email)) {
+        if (email.isPresent() && !employeeService.isEmailAvailable(email.get())) {
             return new AvailabilityResponse(false);    
         }
         return new AvailabilityResponse(true);

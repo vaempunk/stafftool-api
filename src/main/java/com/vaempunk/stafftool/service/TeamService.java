@@ -55,8 +55,8 @@ public class TeamService {
     public TeamDto update(TeamDto newTeam) {
         var team = teamRepository.findById(newTeam.getId())
                 .orElseThrow(ResourceNotFoundException::new);
-        if (!(team.getName().equals(newTeam.getName()) && team.getDepartment().getId() == newTeam.getDepartmentId())
-                || isTeamNameAvailable(newTeam.getDepartmentId(), newTeam.getName()))
+        if (!((team.getName().equals(newTeam.getName()) && team.getDepartment().getId() == newTeam.getDepartmentId())
+                || isTeamNameAvailable(newTeam.getDepartmentId(), newTeam.getName())))
             throw new ResourceConflictException();
         teamMapper.updateFromDto(team, newTeam);
         var department = departmentRepository.findById(newTeam.getDepartmentId())

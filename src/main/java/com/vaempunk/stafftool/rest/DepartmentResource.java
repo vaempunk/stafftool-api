@@ -51,7 +51,7 @@ public class DepartmentResource {
         return departmentService.update(newDepartmentDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/departments/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         departmentService.delete(id);
